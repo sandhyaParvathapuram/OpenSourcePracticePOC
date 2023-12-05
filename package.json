@@ -1,0 +1,17 @@
+{
+  "name": "aws-ses",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "opensourceteam",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1510.0",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.7",
+    "nodemailer-ses-transport": "^1.5.1"
+  }
+}
