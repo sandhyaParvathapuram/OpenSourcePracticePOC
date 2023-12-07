@@ -1,3 +1,5 @@
+const express = require("express");
+const bodyParser = require("body-parser");
 const AWS = require("aws-sdk");
 const nodemailer = require("nodemailer");
 const sesTransport = require("nodemailer-ses-transport");
@@ -12,65 +14,36 @@ const SES_CONFIG = {
 const transporter = nodemailer.createTransport(
   sesTransport({ ses: new AWS.SES(SES_CONFIG) })
 );
-// const email = (data)=>{
-//     return new Promise((resolve, rejects)=>{
-//         const msg = {
-//           to: data.to,
-//           from: "rgaddam@evoketechnologies.com",
-//           subject: data.subject,
-//           text: data.body,
-//           html: data.html,
-//           attachments : data.attachments
-//         };
 
-//         sgMail
-//           .send(msg)
-//           .then(() => {
-//             console.log("Email sent successfully");
-//             resolve("Email sent successfully");
-//           })
-//           .catch((error) => {
-//             console.error("Error sending email:", error);
-//             rejects("Error sending email:", error);
-//           });
-//     })
+const app = express();
+const port = process.env.PORT || 3000;
 
-// }
+app.use(bodyParser.json());
 
-const data = {
-  to: "ramarao.g92@gmail.com",
-  subject: "testmail",
-  html: "<p>TEST SAMPLE MAIL</p>",
-  text: "sample mail",
-};
+app.post("/send-email", (req, res) => {
+  const data = req.body;
 
-const email = (data) => {
-  return new Promise((resolve, rejects) => {
-    const mailOptions = {
-      from: "sandhya15031996@gmail.com",
-      to: data.to,
-      subject: data.subject,
-      html: data.html,
-      text: data.body,
-      attachments: data.attachments,
-    };
-    transporter
-      .sendMail(mailOptions)
-      .then((res) => {
-        console.log(res);
-        resolve(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        rejects(err);
-      });
-  });
-};
-email(data)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-// module.exports = email;
+  const mailOptions = {
+    from: data.from,
+    to: data.to,
+    subject: data.subject,
+    text: data.text,
+    html: data.html,
+    attachments: data.attachments,
+  };
+
+  transporter
+    .sendMail(mailOptions)
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({ message: "Email sent successfully" });
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+      res.status(500).json({ error: "Error sending email" });
+    });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
