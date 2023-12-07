@@ -38,7 +38,7 @@ const transporter = nodemailer.createTransport(
 // }
 
 const data = {
-  to: "sandhya15031996@gmail.com",
+  to: "ramarao.g92@gmail.com",
   subject: "testmail",
   html: "<p>TEST SAMPLE MAIL</p>",
   text: "sample mail",
