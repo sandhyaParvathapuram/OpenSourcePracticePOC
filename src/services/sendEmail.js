@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport(
   sesTransport({ ses: new AWS.SES(SES_CONFIG) })
 );
 
-sendEmail((data) => {
+function sendEmail(data) {
   const mailOptions = {
     from: data.from,
     to: data.to,
@@ -24,6 +24,6 @@ sendEmail((data) => {
   };
 
   return transporter.sendMail(mailOptions);
-});
+}
 
 module.exports = { sendEmail };
