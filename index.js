@@ -4,6 +4,7 @@ const AWS = require("aws-sdk");
 const nodemailer = require("nodemailer");
 const sesTransport = require("nodemailer-ses-transport");
 const dotenv = require("./config/index");
+const serverless = require("serverless-http");
 
 const SES_CONFIG = {
   accessKeyId: dotenv.accessKeyId,
@@ -47,3 +48,9 @@ app.post("/send-email", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+app.use("/*", (req, res) => {
+  res.status(404).send(`API not foud`);
+});
+
+module.exports.handler = serverless(app);
